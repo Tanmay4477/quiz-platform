@@ -68,7 +68,7 @@ export default function QuizPage() {
             </div>
             <h2 className="text-2xl font-bold text-gray-900 mb-3">{error}</h2>
             <p className="text-gray-600 mb-8 max-w-md mx-auto">
-              We couldn't find the quiz you're looking for. It may have been removed or you might have followed an invalid link.
+              We could not find the quiz you are looking for. It may have been removed or you might have followed an invalid link.
             </p>
             <Link 
               href="/"

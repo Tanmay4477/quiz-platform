@@ -88,6 +88,7 @@ export default function CreateQuizPage() {
       setTimeout(() => {
         router.push('/');
       }, 500);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error("Error saving quiz:", error);
       alert('Error creating quiz: ' + error.message);
@@ -98,7 +99,6 @@ export default function CreateQuizPage() {
       
   return (
     <div className="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-      {/* The rest of your component remains the same */}
       <div className="bg-gradient-to-r from-indigo-600 to-purple-600 rounded-2xl shadow-xl overflow-hidden mb-8">
         <div className="px-6 py-8 sm:p-10">
           <h1 className="text-2xl sm:text-3xl font-bold text-white">Create a New Quiz</h1>
