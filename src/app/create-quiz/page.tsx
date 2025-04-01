@@ -1,9 +1,9 @@
 "use client";
 
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Quiz, Question } from '@/interfaces/main';
-import { saveQuiz, saveTopics } from '@/utils/localStorage';
+import { saveQuiz } from '@/utils/localStorage';
 import QuestionForm from '@/components/QuestionForm';
 import QuestionList from '@/components/QuestionList';
 import { v4 as uuidv4 } from 'uuid';
@@ -14,8 +14,11 @@ export default function CreateQuizPage() {
   const [description, setDescription] = useState('');
   const [topic, setTopic] = useState('');
   const [questions, setQuestions] = useState<Question[]>([]);
+
+  const pendingQuestionRef = useRef<Question | null>(null);
   
   const handleAddQuestion = (question: Question) => {
+    pendingQuestionRef.current = null;
     setQuestions(prevQuestions => [...prevQuestions, question]);
     console.log("Question added:", question);
   };
@@ -26,27 +29,32 @@ export default function CreateQuizPage() {
   
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted");
     
-    if (questions.length === 0) {
-      alert('Please add at least one more question to your quiz');
+    let finalQuestions = [...questions];
+
+    if (pendingQuestionRef.current) {
+      finalQuestions = [...finalQuestions, pendingQuestionRef.current];
+      pendingQuestionRef.current = null;
+    }
+
+    if (finalQuestions.length === 0) {
+      alert('Please add at least one question to your quiz');
       return;
     }
-    
+
     try {
       const newQuiz: Quiz = {
         id: uuidv4(),
         title,
         description,
         topic,
-        createdBy: 'anonymous',
+        createdBy: 'Prerak', 
         createdAt: new Date(),
-        questions
+        questions: finalQuestions
       };
       
-      console.log("Saving quiz:", newQuiz);
+      console.log("Saving quiz with questions:", finalQuestions.length);
       saveQuiz(newQuiz);
-      saveTopics(topic)
       
       alert('Quiz created successfully!');
       
@@ -58,12 +66,13 @@ export default function CreateQuizPage() {
       setTimeout(() => {
         router.push('/');
       }, 500);
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error("Error saving quiz:", error);
       alert('Error creating quiz: ' + error.message);
     }
   };
-
+      
   return (
     <div className="max-w-4xl mx-auto py-8 px-4">
       <h1 className="text-2xl font-bold mb-6">Create a New Quiz</h1>

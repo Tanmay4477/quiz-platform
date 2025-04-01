@@ -1,4 +1,3 @@
-// lib/types.ts
 export interface User {
   id: string;
   username: string;
@@ -29,4 +28,12 @@ export interface QuizResult {
   score: number;
   totalQuestions: number;
   completedAt: string | Date;
+}
+
+export interface LeaderboardEntry {
+  username: string;
+  totalScore: number;
+  quizzesTaken: number;
+  averageScore: number;
+  highestScore: number;
 }
