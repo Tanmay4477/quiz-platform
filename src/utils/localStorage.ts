@@ -73,7 +73,6 @@ export const getDailyLeaderboard = (): LeaderboardEntry[] => {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   
-  // Filter for today's results
   const todayResults = results.filter(result => {
     const resultDate = new Date(result.completedAt);
     resultDate.setHours(0, 0, 0, 0);
@@ -84,17 +83,14 @@ export const getDailyLeaderboard = (): LeaderboardEntry[] => {
 };
 
 
-// Get weekly leaderboard data
 export const getWeeklyLeaderboard = (): LeaderboardEntry[] => {
   const results = getQuizResults();
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   
-  // Go back 7 days
   const oneWeekAgo = new Date(today);
   oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
   
-  // Filter for this week's results
   const weeklyResults = results.filter(result => {
     const resultDate = new Date(result.completedAt);
     return resultDate >= oneWeekAgo;
